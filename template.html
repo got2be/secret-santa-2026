@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Таємний Санта 🎅</title>
+<style>
+  :root{
+    --bg:#0c1a16; --bg2:#102a22; --card:#13322a; --line:#1f4a3d;
+    --gold:#e8c37e; --red:#e4573c; --green:#3fae7a; --ink:#eaf5ef; --mut:#9fc3b4;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    min-height:100vh; font-family:ui-rounded,"Segoe UI",system-ui,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #17463a 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 100%, #15221c 0%, transparent 60%),
+      linear-gradient(160deg,var(--bg),var(--bg2));
+    display:flex; align-items:center; justify-content:center; padding:24px;
+    overflow-x:hidden;
+  }
+  .snow{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .snow i{position:absolute;top:-10px;color:#ffffff;opacity:.7;animation:fall linear infinite}
+  @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+  .card{
+    position:relative; z-index:1; width:100%; max-width:440px;
+    background:linear-gradient(180deg,var(--card),#0f2a23);
+    border:1px solid var(--line); border-radius:22px; padding:32px 28px 30px;
+    box-shadow:0 30px 70px -30px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  .hat{font-size:48px;text-align:center;line-height:1;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4))}
+  h1{margin:10px 0 4px;text-align:center;font-size:27px;letter-spacing:.3px}
+  .sub{margin:0 0 22px;text-align:center;color:var(--mut);font-size:14px}
+  label{display:block;font-size:13px;color:var(--mut);margin:14px 2px 7px}
+  select,input{
+    width:100%;padding:13px 14px;border-radius:13px;border:1px solid var(--line);
+    background:#0d241d;color:var(--ink);font-size:16px;outline:none;transition:border-color .15s;
+  }
+  select:focus,input:focus{border-color:var(--green)}
+  button{
+    width:100%;margin-top:20px;padding:14px;border:0;border-radius:13px;cursor:pointer;
+    font-size:16px;font-weight:700;color:#0c1a16;
+    background:linear-gradient(180deg,var(--gold),#d4a85c);
+    box-shadow:0 10px 24px -10px rgba(232,195,126,.6);transition:transform .08s,filter .15s;
+  }
+  button:hover{filter:brightness(1.05)}
+  button:active{transform:translateY(1px)}
+  button:disabled{opacity:.6;cursor:default}
+  .result{margin-top:22px;text-align:center;min-height:10px}
+  .result .who{
+    font-size:30px;font-weight:800;color:var(--gold);
+    animation:pop .5s cubic-bezier(.2,1.4,.4,1);
+  }
+  .result .cap{color:var(--mut);font-size:14px;margin-bottom:4px}
+  .err{color:var(--red);font-size:14px;margin-top:12px;text-align:center}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+  .foot{margin-top:20px;text-align:center;color:var(--mut);font-size:12px;line-height:1.5}
+  .divider{height:1px;background:var(--line);margin:22px 0 0}
+</style>
+</head>
+<body>
+<div class="snow" id="snow"></div>
+<main class="card">
+  <div class="hat">🎅</div>
+  <h1>Таємний Санта</h1>
+  <p class="sub">Обери своє ім'я та введи свій PIN, щоб дізнатись, кому ти даруєш&nbsp;🎁</p>
+
+  <label for="name">Твоє ім'я</label>
+  <select id="name"></select>
+
+  <label for="pin">Твій PIN</label>
+  <input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="••••" maxlength="8">
+
+  <button id="go">Показати 🎄</button>
+
+  <div class="result" id="result"></div>
+  <div class="err" id="err"></div>
+
+  <div class="divider"></div>
+  <p class="foot">Пари зашифровано (AES-256). Побачити результат можна лише зі своїм PIN —
+  навіть у коді сторінки нічого не прочитати.</p>
+</main>
+
+<script>
+const DATA = __DATA__;
+
+// snow
+(function(){
+  const s=document.getElementById('snow');
+  const flakes=['❄','❅','•','·'];
+  for(let i=0;i<40;i++){
+    const f=document.createElement('i');
+    f.textContent=flakes[i%flakes.length];
+    const size=8+Math.random()*16;
+    f.style.left=Math.random()*100+'vw';
+    f.style.fontSize=size+'px';
+    f.style.opacity=(.2+Math.random()*.6).toFixed(2);
+    f.style.animationDuration=(6+Math.random()*10)+'s';
+    f.style.animationDelay=(-Math.random()*12)+'s';
+    s.appendChild(f);
+  }
+})();
+
+const sel=document.getElementById('name');
+DATA.entries.forEach(e=>{
+  const o=document.createElement('option');
+  o.value=e.name;o.textContent=e.name;sel.appendChild(o);
+});
+
+const b64ToBytes=(b64)=>Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
+
+async function deriveKey(secret,salt){
+  const km=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey(
+    {name:'PBKDF2',salt,iterations:DATA.iterations,hash:'SHA-256'},
+    km,{name:'AES-GCM',length:256},false,['decrypt']
+  );
+}
+
+const resultEl=document.getElementById('result');
+const errEl=document.getElementById('err');
+const btn=document.getElementById('go');
+const pinEl=document.getElementById('pin');
+
+async function reveal(){
+  errEl.textContent='';resultEl.innerHTML='';
+  const name=sel.value;
+  const pin=pinEl.value.trim();
+  if(!pin){errEl.textContent='Введи свій PIN.';return;}
+  const entry=DATA.entries.find(e=>e.name===name);
+  btn.disabled=true;btn.textContent='Розшифровую…';
+  try{
+    const salt=b64ToBytes(DATA.salt);
+    const key=await deriveKey(name+':'+pin,salt);
+    const iv=b64ToBytes(entry.iv);
+    const ct=b64ToBytes(entry.ct);
+    const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct);
+    const who=new TextDecoder().decode(pt);
+    resultEl.innerHTML='<div class="cap">Ти даруєш подарунок для</div><div class="who">'+who+' 🎁</div>';
+  }catch(e){
+    errEl.textContent='Невірний PIN. Спробуй ще раз.';
+  }finally{
+    btn.disabled=false;btn.textContent='Показати 🎄';
+  }
+}
+btn.addEventListener('click',reveal);
+pinEl.addEventListener('keydown',e=>{if(e.key==='Enter')reveal();});
+</script>
+</body>
+</html>
