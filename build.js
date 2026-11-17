@@ -7,6 +7,10 @@ const { webcrypto } = require('crypto');
 const { subtle } = webcrypto;
 
 const NAMES = ['Ілля', 'Наталі', 'Микита', 'Лєра', 'Ганна', 'Вова', 'Валентина'];
+// Couples must not gift each other (mutual exclusions).
+const COUPLES = [['Ілля', 'Наталі'], ['Ганна', 'Вова'], ['Лєра', 'Микита']];
+const partner = {};
+for (const [a, b] of COUPLES) { partner[a] = b; partner[b] = a; }
 const ITERATIONS = 150000;
 
 const b64 = (buf) => Buffer.from(buf).toString('base64');
@@ -24,7 +28,8 @@ function shuffle(arr) {
 function derange(names) {
   while (true) {
     const recipients = shuffle(names);
-    if (names.every((giver, i) => giver !== recipients[i])) return recipients;
+    const ok = names.every((giver, i) => giver !== recipients[i] && partner[giver] !== recipients[i]);
+    if (ok) return recipients;
   }
 }
 
