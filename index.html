@@ -3,146 +3,252 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Таємний Санта 🎅</title>
+<title>★ ТАЄМНИЙ САНТА 3000 ★</title>
 <style>
-  :root{
-    --bg:#0c1a16; --bg2:#102a22; --card:#13322a; --line:#1f4a3d;
-    --gold:#e8c37e; --red:#e4573c; --green:#3fae7a; --ink:#eaf5ef; --mut:#9fc3b4;
-  }
+  @font-face{font-family:x;src:local("Comic Sans MS")}
   *{box-sizing:border-box}
   html,body{margin:0}
   body{
-    min-height:100vh; font-family:ui-rounded,"Segoe UI",system-ui,sans-serif;
-    color:var(--ink);
+    font-family:"Comic Sans MS","Comic Sans","Chalkboard SE",cursive,system-ui;
+    color:#fff; text-align:center; overflow-x:hidden;
     background:
-      radial-gradient(1200px 600px at 50% -10%, #17463a 0%, transparent 60%),
-      radial-gradient(900px 500px at 100% 100%, #15221c 0%, transparent 60%),
-      linear-gradient(160deg,var(--bg),var(--bg2));
-    display:flex; align-items:center; justify-content:center; padding:24px;
-    overflow-x:hidden;
+      repeating-linear-gradient(45deg,#ff00cc 0 22px,#00e5ff 22px 44px) fixed;
   }
-  .snow{position:fixed;inset:0;pointer-events:none;z-index:0}
-  .snow i{position:absolute;top:-10px;color:#ffffff;opacity:.7;animation:fall linear infinite}
-  @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
-  .card{
-    position:relative; z-index:1; width:100%; max-width:440px;
-    background:linear-gradient(180deg,var(--card),#0f2a23);
-    border:1px solid var(--line); border-radius:22px; padding:32px 28px 30px;
-    box-shadow:0 30px 70px -30px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.04);
+  /* tiled star overlay */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.18;
+    background-image:radial-gradient(#fff 1.5px,transparent 2px);
+    background-size:26px 26px;
   }
-  .hat{font-size:48px;text-align:center;line-height:1;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4))}
-  h1{margin:10px 0 4px;text-align:center;font-size:27px;letter-spacing:.3px}
-  .sub{margin:0 0 22px;text-align:center;color:var(--mut);font-size:14px}
-  label{display:block;font-size:13px;color:var(--mut);margin:14px 2px 7px}
-  select,input{
-    width:100%;padding:13px 14px;border-radius:13px;border:1px solid var(--line);
-    background:#0d241d;color:var(--ink);font-size:16px;outline:none;transition:border-color .15s;
+  .wrap{position:relative;z-index:2;max-width:760px;margin:0 auto;padding:14px 12px 60px}
+
+  /* ---- WordArt title ---- */
+  .title{
+    margin:10px 0 2px;font-size:44px;font-weight:900;letter-spacing:1px;
+    font-style:italic;transform:skewX(-7deg);line-height:1.05;
+    background:linear-gradient(#fff700,#ff8a00 45%,#ff0000);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(3px 3px 0 #000) drop-shadow(5px 5px 0 #7a00ff);
   }
-  select:focus,input:focus{border-color:var(--green)}
-  button{
-    width:100%;margin-top:20px;padding:14px;border:0;border-radius:13px;cursor:pointer;
-    font-size:16px;font-weight:700;color:#0c1a16;
-    background:linear-gradient(180deg,var(--gold),#d4a85c);
-    box-shadow:0 10px 24px -10px rgba(232,195,126,.6);transition:transform .08s,filter .15s;
+  .title .num{color:#00ffea;-webkit-text-fill-color:#00ffea;}
+  .tagline{font-size:15px;color:#fff;background:#7a00ff;display:inline-block;
+    padding:4px 12px;border:2px dashed #fff700;transform:rotate(-1.5deg);margin-top:6px}
+  .blink{animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+
+  marquee{display:block;background:#000;color:#39ff14;border:3px ridge #fff700;
+    font-size:15px;padding:5px 0;margin:12px 0}
+
+  /* ---- Christmas tree ---- */
+  .treebox{position:relative;width:360px;height:470px;margin:14px auto 0}
+  .star{position:absolute;left:50%;top:-6px;transform:translateX(-50%);
+    font-size:52px;filter:drop-shadow(0 0 10px #fff700);animation:spin 6s linear infinite;z-index:5}
+  @keyframes spin{to{transform:translateX(-50%) rotate(360deg)}}
+  .tier{position:absolute;left:50%;transform:translateX(-50%);width:0;height:0;
+    border-left:solid transparent;border-right:solid transparent;
+    border-bottom:solid #0a8f3c;filter:drop-shadow(0 4px 0 #065c27)}
+  .t1{top:40px;border-left-width:85px;border-right-width:85px;border-bottom-width:130px}
+  .t2{top:140px;border-left-width:120px;border-right-width:120px;border-bottom-width:150px}
+  .t3{top:255px;border-left-width:155px;border-right-width:155px;border-bottom-width:170px}
+  .trunk{position:absolute;left:50%;top:420px;transform:translateX(-50%);
+    width:46px;height:46px;background:#6b3a1f;border:2px solid #40230f}
+  /* twinkle lights */
+  .light{position:absolute;width:12px;height:12px;border-radius:50%;z-index:4;
+    box-shadow:0 0 8px currentColor;animation:tw 1.2s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:1}50%{opacity:.25}}
+
+  /* face ornaments */
+  .orn{position:absolute;z-index:6;transform-origin:50% -14px;
+    animation:sway 3.2s ease-in-out infinite}
+  @keyframes sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+  .orn::before{content:"";position:absolute;left:50%;top:-14px;width:2px;height:14px;
+    background:#ffe08a;transform:translateX(-50%)}
+  .orn::after{content:"";position:absolute;left:50%;top:-18px;width:9px;height:7px;
+    background:linear-gradient(#ffe9a8,#c99a2e);border-radius:2px;transform:translateX(-50%)}
+  .orn b{display:block;width:var(--d);height:var(--d);border-radius:50%;
+    background-size:cover;background-position:center;
+    border:4px solid #ffe08a;box-shadow:0 0 0 3px #e4573c,0 6px 12px rgba(0,0,0,.5)}
+
+  /* ---- retro window form ---- */
+  .win{max-width:430px;margin:20px auto 0;background:#d9d6ce;color:#000;
+    border:3px solid #000;border-radius:3px;text-align:left;
+    box-shadow:6px 6px 0 #7a00ff;overflow:hidden}
+  .bar{background:linear-gradient(#000080,#1084d0);color:#fff;font-weight:bold;
+    padding:5px 9px;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+  .bar span{background:#c0c0c0;color:#000;border:2px outset #fff;width:18px;height:16px;
+    text-align:center;line-height:12px;font-size:11px}
+  .pane{padding:16px}
+  label{display:block;font-size:13px;font-weight:bold;margin:10px 2px 5px;color:#000080}
+  select,input{width:100%;padding:9px;font-family:inherit;font-size:16px;
+    border:2px inset #fff;background:#fff;color:#000}
+  button{margin-top:16px;width:100%;padding:11px;font-family:inherit;font-weight:bold;
+    font-size:17px;cursor:pointer;color:#000;background:#c0c0c0;border:3px outset #fff;
+    text-shadow:1px 1px 0 #fff}
+  button:active{border-style:inset}
+  .result{margin-top:16px;text-align:center;min-height:6px}
+  .result .cap{font-size:13px;color:#000080;font-weight:bold}
+  .result .who{font-size:30px;font-weight:900;font-style:italic;transform:skewX(-6deg);
+    background:linear-gradient(#ff0000,#ffd000,#00a2ff);-webkit-background-clip:text;
+    background-clip:text;color:transparent;filter:drop-shadow(2px 2px 0 #000);
+    animation:pop .5s cubic-bezier(.2,1.5,.4,1)}
+  @keyframes pop{0%{transform:scale(.4) skewX(-6deg);opacity:0}100%{transform:scale(1) skewX(-6deg);opacity:1}}
+  .err{color:#c00000;font-weight:bold;font-size:14px;margin-top:10px;text-align:center}
+  .note{font-size:12px;color:#222;background:#fff700;border:2px dotted #000;padding:6px;margin-top:14px}
+
+  .foot{margin:26px auto 0;font-size:13px;color:#000;background:#c0c0c0;
+    display:inline-block;padding:7px 14px;border:3px outset #fff}
+  .hits{font-family:"Courier New",monospace;background:#000;color:#39ff14;
+    padding:2px 6px;border:1px solid #39ff14;letter-spacing:3px}
+
+  /* confetti */
+  .fx{position:fixed;inset:0;pointer-events:none;z-index:9}
+  .fx i{position:absolute;top:-20px;font-size:20px;animation:drop linear forwards}
+  @keyframes drop{to{transform:translateY(110vh) rotate(540deg);opacity:.9}}
+
+  @media(max-width:420px){
+    .title{font-size:32px}
+    .treebox{transform:scale(.82);height:400px;margin-top:0}
   }
-  button:hover{filter:brightness(1.05)}
-  button:active{transform:translateY(1px)}
-  button:disabled{opacity:.6;cursor:default}
-  .result{margin-top:22px;text-align:center;min-height:10px}
-  .result .who{
-    font-size:30px;font-weight:800;color:var(--gold);
-    animation:pop .5s cubic-bezier(.2,1.4,.4,1);
-  }
-  .result .cap{color:var(--mut);font-size:14px;margin-bottom:4px}
-  .err{color:var(--red);font-size:14px;margin-top:12px;text-align:center}
-  @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
-  .foot{margin-top:20px;text-align:center;color:var(--mut);font-size:12px;line-height:1.5}
-  .divider{height:1px;background:var(--line);margin:22px 0 0}
 </style>
 </head>
 <body>
-<div class="snow" id="snow"></div>
-<main class="card">
-  <div class="hat">🎅</div>
-  <h1>Таємний Санта</h1>
-  <p class="sub">Обери своє ім'я та введи свій PIN, щоб дізнатись, кому ти даруєш&nbsp;🎁</p>
+<div class="fx" id="fx"></div>
+<div class="wrap">
+  <h1 class="title">ТАЄМНИЙ&nbsp;САНТА<span class="num"> 3000</span></h1>
+  <div class="tagline">★ <span class="blink">NEW!</span> версія 1998 року ★ без вірусів ★</div>
 
-  <label for="name">Твоє ім'я</label>
-  <select id="name"></select>
+  <marquee scrollamount="7">🎄🎅 Ласкаво просимо на домашню сторінку Таємного Санти!  Обери себе на ялинці... ой, тобто у формі нижче... та дізнайся, кому ти даруєш подарунок!  🎁 Не підглядай за іншими!  ❄ Веселих свят! ❄🎁🎄</marquee>
 
-  <label for="pin">Твій PIN</label>
-  <input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="••••" maxlength="8">
+  <div class="treebox" id="tree">
+    <div class="star">⭐</div>
+    <div class="tier t1"></div>
+    <div class="tier t2"></div>
+    <div class="tier t3"></div>
+    <div class="trunk"></div>
+  </div>
 
-  <button id="go">Показати 🎄</button>
+  <div class="win">
+    <div class="bar">santa_3000.exe <span>×</span></div>
+    <div class="pane">
+      <label for="name">► Обери своє ім'я:</label>
+      <select id="name"></select>
+      <label for="pin">► Введи свій секретний PIN:</label>
+      <input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="****" maxlength="8">
+      <button id="go">🎁 РОЗГОРНУТИ ПОДАРУНОК 🎁</button>
+      <div class="result" id="result"></div>
+      <div class="err" id="err"></div>
+      <div class="note">🔒 Усі пари зашифровано (AES-256). Навіть програміст не прочитає їх у коді — лише ти, зі своїм PIN!</div>
+    </div>
+  </div>
 
-  <div class="result" id="result"></div>
-  <div class="err" id="err"></div>
-
-  <div class="divider"></div>
-  <p class="foot">Пари зашифровано (AES-256). Побачити результат можна лише зі своїм PIN —
-  навіть у коді сторінки нічого не прочитати.</p>
-</main>
+  <div class="foot">
+    🌐 Best viewed in <b>Netscape Navigator</b> @ 800×600<br>
+    Відвідувачів: <span class="hits" id="hits">0000042</span> · © 1998–2026
+  </div>
+</div>
 
 <script>
 const DATA = {"salt":"HHmHS456OJOj12/XC5HOkg==","iterations":150000,"entries":[{"name":"Ілля","iv":"8+ZZUfC1mR93D5o1","ct":"9oHn0vl+/dkfGI8zn+MfPOROByMELO9D"},{"name":"Наталі","iv":"lkgtu9mmZ4t0PjA5","ct":"f/ay2uC0BeyMta17+/PLLrXckTCMX3s/VzrcI62bge1EbQ=="},{"name":"Микита","iv":"nPnD4MHMyhLCLwXG","ct":"/Npx8VSF4r1eq/NNmwiXzVJAC1tnGnTQ"},{"name":"Лєра","iv":"xsjAlnnmX7srOixP","ct":"lGS/vtrKQCBVTTRIEZvvgUsj2jMkenxQGSw="},{"name":"Ганна","iv":"A4CXu3xfeX+Q9QOX","ct":"H3QwooTvp+/9dNTlkhEAznoDoQr5er/c"},{"name":"Вова","iv":"a3TnHOMff7sKK/Dw","ct":"ejPqtk6JYv0m5uWlKtr0kx5ONHvdIsVi6ee85A=="},{"name":"Валентина","iv":"EoI2EMnEzzbz+Yko","ct":"qcP6i+usUapY7mz2L5qMGsdxQ8ScX9elAmGHBw=="}]};
+const FACES = 7; // assets/face1..7.png
 
-// snow
+/* ---- decorate the tree with everyone's faces as ornaments ---- */
 (function(){
-  const s=document.getElementById('snow');
-  const flakes=['❄','❅','•','·'];
-  for(let i=0;i<40;i++){
-    const f=document.createElement('i');
-    f.textContent=flakes[i%flakes.length];
-    const size=8+Math.random()*16;
-    f.style.left=Math.random()*100+'vw';
-    f.style.fontSize=size+'px';
-    f.style.opacity=(.2+Math.random()*.6).toFixed(2);
-    f.style.animationDuration=(6+Math.random()*10)+'s';
-    f.style.animationDelay=(-Math.random()*12)+'s';
-    s.appendChild(f);
+  const tree=document.getElementById('tree');
+  // {left%, top px, diameter px}
+  const spots=[
+    [50, 70, 60],
+    [34,138, 58],[66,150, 58],
+    [26,232, 56],[50,250, 64],[74,238, 56],
+    [40,340, 60],
+  ];
+  const order=[0,1,2,3,4,5,6];
+  order.forEach((f,idx)=>{
+    const s=spots[idx];
+    const o=document.createElement('div');
+    o.className='orn';
+    o.style.left=s[0]+'%';o.style.top=s[1]+'px';
+    o.style.setProperty('--d',s[2]+'px');
+    o.style.marginLeft=(-s[2]/2)+'px';
+    o.style.animationDuration=(2.6+idx*0.25)+'s';
+    o.style.animationDelay=(-idx*0.4)+'s';
+    const b=document.createElement('b');
+    b.style.backgroundImage=`url("assets/face${f+1}.png")`;
+    o.appendChild(b);tree.appendChild(o);
+  });
+  // twinkle lights
+  const cols=['#fff700','#ff2d2d','#00ffea','#ff6ad5','#39ff14'];
+  const lp=[[50,55],[38,120],[62,128],[30,205],[70,210],[50,195],[24,300],[76,300],[44,310],[58,355],[50,400]];
+  lp.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='light';
+    d.style.left=p[0]+'%';d.style.top=p[1]+'px';d.style.color=cols[i%cols.length];
+    d.style.background=cols[i%cols.length];d.style.animationDelay=(-i*0.17)+'s';
+    tree.appendChild(d);
+  });
+})();
+
+/* ---- falling snow/confetti ---- */
+(function(){
+  const fx=document.getElementById('fx');const g=['❄','★','🎁','🎄','❅'];
+  for(let i=0;i<34;i++){
+    const f=document.createElement('i');f.textContent=g[i%g.length];
+    f.style.left=(Math.random()*100)+'vw';
+    f.style.fontSize=(13+Math.random()*16)+'px';
+    f.style.animationDuration=(7+Math.random()*9)+'s';
+    f.style.animationDelay=(-Math.random()*14)+'s';
+    fx.appendChild(f);
   }
 })();
 
+/* ---- fake visitor counter ---- */
+(function(){
+  const el=document.getElementById('hits');
+  let n=42+Math.floor(Math.random()*900);
+  el.textContent=String(n).padStart(7,'0');
+})();
+
+/* ---- the actual Secret Santa logic (unchanged crypto) ---- */
 const sel=document.getElementById('name');
 DATA.entries.forEach(e=>{
-  const o=document.createElement('option');
-  o.value=e.name;o.textContent=e.name;sel.appendChild(o);
+  const o=document.createElement('option');o.value=e.name;o.textContent=e.name;sel.appendChild(o);
 });
-
 const b64ToBytes=(b64)=>Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
-
 async function deriveKey(secret,salt){
   const km=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),'PBKDF2',false,['deriveKey']);
-  return crypto.subtle.deriveKey(
-    {name:'PBKDF2',salt,iterations:DATA.iterations,hash:'SHA-256'},
-    km,{name:'AES-GCM',length:256},false,['decrypt']
-  );
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:DATA.iterations,hash:'SHA-256'},
+    km,{name:'AES-GCM',length:256},false,['decrypt']);
 }
-
 const resultEl=document.getElementById('result');
 const errEl=document.getElementById('err');
 const btn=document.getElementById('go');
 const pinEl=document.getElementById('pin');
 
+function burst(){
+  const fx=document.getElementById('fx');const g=['🎉','🎁','⭐','❄','🎄'];
+  for(let i=0;i<40;i++){
+    const f=document.createElement('i');f.textContent=g[i%g.length];
+    f.style.left=(Math.random()*100)+'vw';f.style.top='-20px';
+    f.style.fontSize=(16+Math.random()*20)+'px';
+    f.style.animation='drop '+(2.5+Math.random()*2)+'s linear forwards';
+    fx.appendChild(f);setTimeout(()=>f.remove(),5000);
+  }
+}
 async function reveal(){
   errEl.textContent='';resultEl.innerHTML='';
-  const name=sel.value;
-  const pin=pinEl.value.trim();
-  if(!pin){errEl.textContent='Введи свій PIN.';return;}
+  const name=sel.value;const pin=pinEl.value.trim();
+  if(!pin){errEl.textContent='⚠ Спочатку введи свій PIN!';return;}
   const entry=DATA.entries.find(e=>e.name===name);
-  btn.disabled=true;btn.textContent='Розшифровую…';
+  btn.disabled=true;btn.textContent='⏳ Розшифровую…';
   try{
     const salt=b64ToBytes(DATA.salt);
     const key=await deriveKey(name+':'+pin,salt);
-    const iv=b64ToBytes(entry.iv);
-    const ct=b64ToBytes(entry.ct);
-    const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct);
+    const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64ToBytes(entry.iv)},key,b64ToBytes(entry.ct));
     const who=new TextDecoder().decode(pt);
-    resultEl.innerHTML='<div class="cap">Ти даруєш подарунок для</div><div class="who">'+who+' 🎁</div>';
+    resultEl.innerHTML='<div class="cap">🎅 Ти даруєш подарунок для:</div><div class="who">'+who+'</div>';
+    burst();
   }catch(e){
-    errEl.textContent='Невірний PIN. Спробуй ще раз.';
+    errEl.textContent='❌ Невірний PIN! Спробуй ще раз.';
   }finally{
-    btn.disabled=false;btn.textContent='Показати 🎄';
+    btn.disabled=false;btn.textContent='🎁 РОЗГОРНУТИ ПОДАРУНОК 🎁';
   }
 }
 btn.addEventListener('click',reveal);
