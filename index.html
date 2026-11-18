@@ -161,7 +161,9 @@ const FACES = 7; // assets/face1..7.png
     [26,232, 56],[50,250, 64],[74,238, 56],
     [40,340, 60],
   ];
-  const order=[4,2,6,0,3,1,5];
+  // shuffle face positions on every page load
+  const order=[0,1,2,3,4,5,6];
+  for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
   order.forEach((f,idx)=>{
     const s=spots[idx];
     const o=document.createElement('div');
